@@ -1,13 +1,19 @@
 <?php
 
 namespace App;
-use Laravel\Passport\HasApiTokens;
+
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Auth\Passwords\CanResetPassword;
+use App\Role;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Jenssegers\Date\Date;
+use Carbon\Carbon;
+//use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable
 {
-  use HasApiTokens,Notifiable;
+  use Notifiable,CanResetPassword,EntrustUserTrait;
 
   /**
   * The attributes that are mass assignable.
@@ -15,7 +21,7 @@ class User extends Authenticatable
   * @var array
   */
   protected $fillable = [
-    'nombre', 'apellido', 'cargo', 'telefono', 'email', 'horas_disponible', 'password', 'roles_id', 'areas_id',
+   'nombres','apellidos','email','celular','genero','ciudad_id','pais_id','notifications_push','notifications_email','active',
   ];
 
   /**
@@ -27,6 +33,16 @@ class User extends Authenticatable
     'password', 'remember_token',
   ];
 
+  /**
+   * Send the password reset notification.
+   *
+   * @param  string  $token
+   * @return void
+   */
+  /*public function sendPasswordResetNotification($token)
+  {
+      $this->notify(new ResetPasswordNotification($token));
+  }*/
 
   /**
   * Obtiene el Rol que esta asociado a un Usuario
@@ -35,48 +51,25 @@ class User extends Authenticatable
   {
     return $this->belongsTo('App\Role');
   }
-  /**
-  * Obtiene el Area que esta asociada a un Usuario
-  */
-  public function Area()
-  {
-    return $this->belongsTo('App\Area');
-  }
 
-  /**
-  * Obtiene los Comentarios que posee el usuario
-  */
-  public function Comentario()
-  {
-    return $this->hasMany('App\Comentario');
-  }
-  /**
-  * Obtiene los Tareas que posee el usuario
-  */
-  public function Tarea()
-  {
-    return $this->hasMany('App\Tarea');
-  }
-  /**
-  * Obtiene los OTS que posee el usuario
-  */
-  public function Ot()
-  {
-    return $this->hasMany('App\Ot');
-  }
-  /**
-  * Obtiene los Historicos que posee el usuario
-  */
-  public function Historico_Tarea()
-  {
-    return $this->hasMany('App\Historico_Tarea');
-  }
-  /**
-  * Obtiene los Historicos de OTS que posee el usuario
-  */
-  public function Historico_Ot()
-  {
-    return $this->hasMany('App\Historico_Ot');
-  }
 
+    public function Cancha()
+        {
+            return $this->hasMany('App\Cancha');
+        }
+
+    public function Disponibilidad()
+        {
+            return $this->hasMany('App\DisponibilidadUsuario');
+        }
+
+    public function Pais()
+        {
+            return $this->hasOne('App\Pais');
+        }
+
+    public function Ciudad()
+        {
+            return $this->hasOne('App\Ciudade');
+        }
 }

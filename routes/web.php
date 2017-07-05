@@ -24,9 +24,29 @@ Route::group(['middleware' => 'auth'], function () {
     #adminlte_routes
 
 
+});
+//Funciones de Inicio de Sección y registro.
+Route::group(['middleware' => 'cors'], function () {
+
+    //Funciones para Usuario.
+    Route::post('user/login','userController@login');
+    Route::post('user/create','userController@store');
+    Route::post('user/logout','userController@logout');
+    Route::post('user/rememberpassword','userController@RecoveryPassword');
+    // Password Reset Routes...
+    Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('admin.password.reset');
+    Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
+    Route::get('password/reset/{token}', 'ResetPasswordController@showResetForm')->name('admin.password.token');
+    Route::post('password/reset', 'ResetPasswordController@reset');
 
 });
+
+
 
 Route::get('/p', function () {
-    return bcrypt('H1m4l4ya!');
+    return bcrypt('ygoj45wf');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');
