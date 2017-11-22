@@ -23,6 +23,14 @@ Route::group(['prefix' => 'v1','middleware' => 'auth:api'], function () {
     //Please do not remove this if you want adminlte:route and adminlte:link commands to works correctly.
     #adminlte_api_routes
 
+    Route::resource('user', 'userController');
+    Route::get('user/show_by_email/{$email}','userController@showUserByEmail');
+    Route::put('user/update/notifications_push/{$id}','userController@updateNotificationsPush');
+    Route::put('user/update/notifications_email/{$id}','userController@updateNotificationsEmail');
+    //Route::get('Usuario/consultar/email','userController@ConsultarUsuarioByEmail']);
 
+    Route::resource('cancha', 'CanchaController');
+    Route::get('cancha/show_by_zone/{$id}','CanchaController@showCanchaByZoneId');
+    
 
 });
