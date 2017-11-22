@@ -9,11 +9,23 @@ use App\Role;
 use Zizaco\Entrust\Traits\EntrustUserTrait;
 use Jenssegers\Date\Date;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\SoftDeletes; // <-- This is required
 //use App\Notifications\ResetPassword as ResetPasswordNotification;
 
 class User extends Authenticatable
 {
-  use Notifiable,CanResetPassword,EntrustUserTrait;
+  use Notifiable,CanResetPassword;
+  use SoftDeletes, EntrustUserTrait {
+
+      SoftDeletes::restore as sfRestore;
+      EntrustUserTrait::restore as euRestore;
+
+  }
+
+  public function restore() {
+      $this->sfRestore();
+      Cache::tags(Config::get('entrust.role_user_table'))->flush();
+  }
 
   /**
   * The attributes that are mass assignable.

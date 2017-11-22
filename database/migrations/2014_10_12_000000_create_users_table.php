@@ -26,7 +26,6 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->integer('roles_id')->unsigned()->default(4);
             $table->integer('pais_id')->unsigned()->default(1);
-            $table->tinyInteger('active')->default(1);
             $table->integer('ciudad_id')->unsigned()->nullable();
             $table->tinyInteger('notifications_push')->default(1);
             $table->tinyInteger('notifications_email')->default(1);
